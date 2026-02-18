@@ -29,8 +29,10 @@
 
         <StackPanel>
             <Button x:Name="loadBtn" Height="40px" Width="80px" Click="loadBtn_Click" Margin="10px">Betöltés</Button>
-            <Slider x:Name="inputSli" Minimum="10" Maximum="100"></Slider>
-            <Button x:Name="rndBtn" Width="60px">Generálás</Button>
+            <TextBox x:Name="valueTb" Text="10"/>
+            <Slider x:Name="inputSli" Minimum="10" Maximum="100" ValueChanged="inputSli_ValueChanged" TickFrequency="1"
+        IsSnapToTickEnabled="True"></Slider>
+            <Button x:Name="rndBtn" Width="60px" Click="rndBtn_Click">Generálás</Button>
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Center">

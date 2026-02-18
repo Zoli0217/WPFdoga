@@ -31,8 +31,6 @@ namespace WpfAppListadoboz
             muveletiJel = Convert.ToChar(mezok[1]);
             op2 = Convert.ToInt32(mezok[2]);
         }
-
-        
     }
     public partial class MainWindow : Window
     {
@@ -42,7 +40,7 @@ namespace WpfAppListadoboz
         {
             InitializeComponent();
             rnd = new Random();
-            adatok = File.ReadAllLines("C:\\Users\\bodi.zoltan\\Desktop\\12FH_WPF\\Műveletek.txt")
+            adatok = File.ReadAllLines("Műveletek.txt")
             .Select(sor => new Muveletek(sor.Split(" ")))
             .ToList();
         }
@@ -126,10 +124,37 @@ namespace WpfAppListadoboz
 
         private void megoldas3Btn_Click(object sender, RoutedEventArgs e)
         {
-            
+            var maxMuvelet = adatok
+                .Select(x =>  new { Muvelet = x, Eredmeny = Szamol(x.op1, x.muveletiJel, x.op2) })
+                .OrderByDescending(x => x.Eredmeny).First();
+
+            lbOutput.Items.Add(maxMuvelet.Eredmeny);
         }
 
+        private void rndBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();   
 
+            if (sfd.ShowDialog() == true)
+            {
+                List<string> randomMuveletek = new List<string>();
+                char[] muveletiJelek = new char[] { '+', '-', '*', '/', '%' };
+                for (int i = 0; i < (int)inputSli.Value; i++)
+                {
+                    int operandus1 = rnd.Next(1, 100);
+                    int operandus2 = rnd.Next(1, 100);
+
+                    char muveletiJel = muveletiJelek[rnd.Next(0, muveletiJelek.Length)];
+                    randomMuveletek.Add($"{operandus1} {muveletiJel} {operandus2}");
+                }
+                File.WriteAllLines(sfd.FileName, randomMuveletek);
+            }
+        }
+
+        private void inputSli_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            valueTb.Text = inputSli.Value.ToString();
+        }
     }
 
 }
